@@ -13,9 +13,9 @@ import Alamofire
 import Foundation
 import SwiftSpinner
 
-class HomeViewController: UIViewController, CLLocationManagerDelegate, UITableViewDataSource, UITableViewDelegate{
+class HomeViewController: UIViewController, CLLocationManagerDelegate, UITableViewDataSource, UITableViewDelegate, UISearchResultsUpdating, UIContextMenuInteractionDelegate{
     
-    @IBOutlet var nav: UINavigationBar!
+    
     @IBOutlet var WeatherImage: UIImageView!
     @IBOutlet var city: UILabel!
     @IBOutlet var state: UILabel!
@@ -24,6 +24,7 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITableVi
     @IBOutlet var NewsTable: UITableView!
     
     var articles = [Article]()
+    var refreshControl = UIRefreshControl()
     
     var locationManager: CLLocationManager?
     let stateCodes = ["AL","AK","AZ","AR","CA","CO","CT","DE","DC","FL","GA","HI","ID","IL","IN","IA","KS","KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY","NC","ND","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VT","VA","WA","WV","WI","WY"]
@@ -36,10 +37,26 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITableVi
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+//        setUpNavBar()
+        let search = UISearchController(searchResultsController: nil)
+        search.searchResultsUpdater = self
+        search.searchBar.placeholder = "Enter keyword.."
+        navigationItem.searchController = search
+        navigationController?.navigationBar.sizeToFit()
     }
     
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let text = searchController.searchBar.text else { return }
+        print(text)
+    }
+    
+//    func setUpNavBar() {
+//        let searchController = UISearchController(searchResultsController: nil)
+//        navigationItem.searchController = searchController
+//        navigationItem.hidesSearchBarWhenScrolling = true
+//    }
     override func viewDidAppear(_ animated: Bool) {
+        navigationItem.hidesSearchBarWhenScrolling = true
         SwiftSpinner.show("Loading Home Page..")
         NewsTable.dataSource = self
         fetchArticles()
@@ -49,7 +66,13 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITableVi
         locationManager?.delegate = self
         locationManager?.startUpdatingLocation()
         locationManager?.requestWhenInUseAuthorization()
-        
+        refreshControl.addTarget(self, action: #selector(didPullToRefresh), for: .valueChanged)
+        NewsTable.addSubview(refreshControl)
+    }
+    
+    @objc func didPullToRefresh() {
+        fetchArticles()
+        self.refreshControl.endRefreshing()
     }
     
     func locationManager(_ manager: CLLocationManager,  didUpdateLocations locations: [CLLocation]) {
@@ -108,26 +131,55 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITableVi
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return articles.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         SwiftSpinner.hide()
-        return articles.count
+        return 1
     }
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let article = articles[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "NewsItem") as! ArticleTableViewCell
-        cell.setArticle(article: article)
-        cell.layer.cornerRadius = 10
-        cell.layer.borderWidth = 1
-        cell.layer.borderColor = UIColor.lightGray.cgColor
+        do {
+            let article = articles[indexPath.section]
+            cell.setArticle(article: article)
+        }
+        cell.contentView.layer.cornerRadius = 10
+        cell.contentView.layer.borderWidth = 1
+        cell.contentView.layer.borderColor = UIColor.lightGray.cgColor
+        let bgColorView = UIView()
+        bgColorView.backgroundColor = UIColor.clear
+        cell.selectedBackgroundView = bgColorView
+        cell.selectedBackgroundView?.layer.cornerRadius = 11
+        cell.isUserInteractionEnabled = true
+        let interaction = UIContextMenuInteraction(delegate: self)
+        cell.contentView.addInteraction(interaction)
         return cell
     }
     
+    func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
+        let configuration = UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { actions -> UIMenu? in
+            // Creating Save button
+            let share = UIAction(title: "Share with Twitter", image: UIImage(named: "twitter")) { action in
+                // Just showing some alert
+                print("share")
+            }
+            let bookmark = UIAction(title: "Bookmark", image: UIImage(systemName: "bookmark")) { action in
+                // Just showing some alert
+                print("bookmark")
+                
+            }
+            // Creating main context menu
+            return UIMenu.init(title: "menu", children: [share, bookmark])
+        }
+        return configuration
+    }
+    
     func fetchArticles() {
+        self.articles.removeAll()
+        self.NewsTable.reloadData()
         AF.request("https://my-first-gcp-project-271002.appspot.com/IOShomepage").responseJSON {
             response in switch response.result {
             case .success(let value):

@@ -10,11 +10,11 @@ import Foundation
 import UIKit
 
 class Article {
-    var image: String?
-    var title: String?
-    var time: String?
-    var section: String?
-    var id: String?
+    var image: String
+    var title: String
+    var time: String
+    var section: String
+    var id: String
     
     init(image: String, title: String, time: String, section: String, id: String) {
         self.image = image
