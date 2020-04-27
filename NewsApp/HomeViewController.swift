@@ -36,28 +36,13 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITableVi
     }
     
     override func viewDidLoad() {
+        SwiftSpinner.show("Loading Home Page..")
         super.viewDidLoad()
-//        setUpNavBar()
         let search = UISearchController(searchResultsController: nil)
         search.searchResultsUpdater = self
         search.searchBar.placeholder = "Enter keyword.."
         navigationItem.searchController = search
         navigationController?.navigationBar.sizeToFit()
-    }
-    
-    func updateSearchResults(for searchController: UISearchController) {
-        guard let text = searchController.searchBar.text else { return }
-        print(text)
-    }
-    
-//    func setUpNavBar() {
-//        let searchController = UISearchController(searchResultsController: nil)
-//        navigationItem.searchController = searchController
-//        navigationItem.hidesSearchBarWhenScrolling = true
-//    }
-    override func viewDidAppear(_ animated: Bool) {
-        navigationItem.hidesSearchBarWhenScrolling = true
-        SwiftSpinner.show("Loading Home Page..")
         NewsTable.dataSource = self
         fetchArticles()
         WeatherImage.layer.cornerRadius = 10
@@ -69,6 +54,11 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITableVi
         refreshControl.addTarget(self, action: #selector(didPullToRefresh), for: .valueChanged)
         NewsTable.addSubview(refreshControl)
     }
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let text = searchController.searchBar.text else { return }
+        print(text)
+    }
+    
     
     @objc func didPullToRefresh() {
         fetchArticles()
@@ -159,6 +149,15 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITableVi
         return cell
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let detailViewController = segue.destination as? ArticleDetailViewController,
+            let index = NewsTable.indexPathForSelectedRow?.section
+            else {
+                return
+        }
+        detailViewController.article = articles[index]
+    }
+    
     func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
         let configuration = UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { actions -> UIMenu? in
             // Creating Save button
@@ -199,6 +198,9 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITableVi
                 print(error)
             }
         }
+//        DispatchQueue.main.async {
+//            SwiftSpinner.hide()
+//        }
     }
     
     
