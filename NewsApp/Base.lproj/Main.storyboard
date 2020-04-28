@@ -179,7 +179,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bxq-GR-Bii">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="509.5"/>
                                         <subviews>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default-guardian" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="l6u-tC-e3o">
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="l6u-tC-e3o">
                                                 <rect key="frame" x="0.0" y="10" width="414" height="250"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="250" id="vEH-hU-Gpf"/>
@@ -202,8 +202,8 @@
                                                 <constraints>
                                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20.5" id="xVw-P7-Enx"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <nil key="textColor"/>
+                                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="17"/>
+                                                <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="section" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Aea-B1-7j8">
@@ -220,6 +220,9 @@
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                                 <state key="normal" title="View Full Article"/>
+                                                <connections>
+                                                    <action selector="ViewButton:" destination="5B4-KO-Zmm" eventType="touchUpInside" id="a4B-HC-AzM"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -264,12 +267,16 @@
                     </view>
                     <navigationItem key="navigationItem" largeTitleDisplayMode="never" id="J79-21-h4o">
                         <rightBarButtonItems>
-                            <barButtonItem title="share" image="twitter" style="plain" id="bNu-KO-CZ2"/>
+                            <barButtonItem title="share" image="twitter" style="plain" id="bNu-KO-CZ2">
+                                <connections>
+                                    <action selector="TwitterButton:" destination="5B4-KO-Zmm" id="bgM-yF-gca"/>
+                                </connections>
+                            </barButtonItem>
                             <barButtonItem title="bookmark" image="bookmark" catalog="system" style="plain" id="1sc-ij-tqZ"/>
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
-                        <outlet property="detailDescription" destination="pe8-fc-cxY" id="Ebd-ny-4uz"/>
+                        <outlet property="detailDescription" destination="pe8-fc-cxY" id="Hkr-og-ujN"/>
                         <outlet property="detailTitle" destination="V0z-IY-vfQ" id="eTC-eE-pBZ"/>
                         <outlet property="image" destination="l6u-tC-e3o" id="SVK-Ju-Q0l"/>
                         <outlet property="section" destination="Aea-B1-7j8" id="YWS-CP-GKt"/>
@@ -396,7 +403,6 @@
     <resources>
         <image name="bookmark" catalog="system" width="112" height="128"/>
         <image name="bookmark.fill" catalog="system" width="112" height="128"/>
-        <image name="default-guardian" width="1000" height="1000"/>
         <image name="house.fill" catalog="system" width="128" height="106"/>
         <image name="rectangle.split.3x3.fill" catalog="system" width="128" height="93"/>
         <image name="trending-up" width="28" height="28"/>

@@ -18,8 +18,29 @@ class ArticleDetailViewController: UIViewController {
     @IBOutlet var section: UILabel!
     @IBOutlet var time: UILabel!
     @IBOutlet var detailDescription: UILabel!
+    @IBAction func ViewButton(_ sender: Any) {
+        let redirectURL = URL(string: self.link)
+        UIApplication.shared.open(redirectURL!)
+    }
+    @IBAction func TwitterButton(_ sender: Any) {
+        let tweetText = "Check out this Article!"
+        let tweetUrl = self.link
+        let tweetHashtags = "CSCI_571_NewsApp"
+
+        let shareString = "https://twitter.com/intent/tweet?text=\(tweetText)&url=\(tweetUrl)&hashtags=\(tweetHashtags)"
+
+        // encode a space to %20 for example
+        let escapedShareString = shareString.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
+
+        // cast to an url
+        let url = URL(string: escapedShareString)
+
+        // open in safari
+        UIApplication.shared.open(url!)
+    }
     
     var article: Article?
+    var link: String = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,7 +51,6 @@ class ArticleDetailViewController: UIViewController {
     }
     
     func requestDetail(_ id:String) {
-        debugPrint(id)
         let url = "https://my-first-gcp-project-271002.appspot.com/IOSarticle/" + id
         AF.request(url).responseJSON {
             response in switch response.result {
@@ -47,10 +67,14 @@ class ArticleDetailViewController: UIViewController {
                     self.section.text = json["section"].string
                     self.time.text = json["date"].string
                     self.detailTitle.text = json["title"].string
-                    let data = Data(json["description"].string!.utf8)
-                    if let attributedString = try? NSAttributedString(data: data, options: [.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil) {
-                        self.detailDescription.attributedText = attributedString
-                    }
+                    self.link = json["url"].string!
+//                    let data = Data(json["description"].string!.utf8)
+//
+//                    if let attributedString = try? NSAttributedString(data: data, options: [.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil) {
+//                        self.detailDescription.attributedText = attributedString
+//                    }
+                    let decodeString = String(htmlEncodedString: json["description"].string!)
+                    self.detailDescription.text = decodeString
                     SwiftSpinner.hide()
                 }
             case .failure(let error):
@@ -70,4 +94,26 @@ class ArticleDetailViewController: UIViewController {
     }
     */
 
+}
+
+extension String {
+    
+    init?(htmlEncodedString: String) {
+        
+        guard let data = htmlEncodedString.data(using: .utf8) else {
+            return nil
+        }
+        
+        let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [
+            .documentType: NSAttributedString.DocumentType.html,
+            .characterEncoding: String.Encoding.utf8.rawValue
+        ]
+        
+        guard let attributedString = try? NSAttributedString(data: data, options: options, documentAttributes: nil) else {
+            return nil
+        }
+        
+        self.init(attributedString.string)
+    }
+    
 }
