@@ -30,7 +30,7 @@ class ArticleDetailViewController: UIViewController {
     }
     
     func requestDetail(_ id:String) {
-//        debugPrint(id)
+        debugPrint(id)
         let url = "https://my-first-gcp-project-271002.appspot.com/IOSarticle/" + id
         AF.request(url).responseJSON {
             response in switch response.result {
@@ -47,7 +47,10 @@ class ArticleDetailViewController: UIViewController {
                     self.section.text = json["section"].string
                     self.time.text = json["date"].string
                     self.detailTitle.text = json["title"].string
-                    self.detailDescription.text = json["description"].string
+                    let data = Data(json["description"].string!.utf8)
+                    if let attributedString = try? NSAttributedString(data: data, options: [.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil) {
+                        self.detailDescription.attributedText = attributedString
+                    }
                     SwiftSpinner.hide()
                 }
             case .failure(let error):
