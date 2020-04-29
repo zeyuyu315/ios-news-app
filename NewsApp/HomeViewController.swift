@@ -13,8 +13,7 @@ import Alamofire
 import Foundation
 import SwiftSpinner
 
-class HomeViewController: UIViewController, CLLocationManagerDelegate, UITableViewDataSource, UITableViewDelegate, UISearchResultsUpdating, UIContextMenuInteractionDelegate{
-    
+class HomeViewController: UIViewController, CLLocationManagerDelegate, UITableViewDataSource, UITableViewDelegate, UISearchResultsUpdating{
     
     @IBOutlet var WeatherImage: UIImageView!
     @IBOutlet var city: UILabel!
@@ -44,6 +43,7 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITableVi
         navigationItem.searchController = search
         navigationController?.navigationBar.sizeToFit()
         NewsTable.dataSource = self
+        NewsTable.delegate = self
         fetchArticles()
         WeatherImage.layer.cornerRadius = 10
         WeatherImage.clipsToBounds = true
@@ -54,6 +54,7 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITableVi
         refreshControl.addTarget(self, action: #selector(didPullToRefresh), for: .valueChanged)
         NewsTable.addSubview(refreshControl)
     }
+    
     func updateSearchResults(for searchController: UISearchController) {
         guard let text = searchController.searchBar.text else { return }
         print(text)
@@ -143,12 +144,42 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITableVi
         bgColorView.backgroundColor = UIColor.clear
         cell.selectedBackgroundView = bgColorView
         cell.selectedBackgroundView?.layer.cornerRadius = 11
-        cell.isUserInteractionEnabled = true
-        let interaction = UIContextMenuInteraction(delegate: self)
-        cell.contentView.addInteraction(interaction)
         return cell
     }
     
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        let index = indexPath.section
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil, actionProvider: { suggestedActions in
+            return self.makeContextMenu(index: index)
+        })
+    }
+    
+    func makeContextMenu(index: Int) -> UIMenu {
+        let share = UIAction(title: "Share with Twitter", image: UIImage(named: "twitter")) { action in
+            let tweetText = "Check out this Article!"
+            let tweetUrl = self.articles[index].url
+            let tweetHashtags = "CSCI_571_NewsApp"
+
+            let shareString = "https://twitter.com/intent/tweet?text=\(tweetText)&url=\(tweetUrl)&hashtags=\(tweetHashtags)"
+
+            // encode a space to %20 for example
+            let escapedShareString = shareString.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
+
+            // cast to an url
+            let url = URL(string: escapedShareString)
+
+            // open in safari
+            UIApplication.shared.open(url!)
+        }
+        
+        // 4
+        let bookmark = UIAction(title: "Bookmark", image: UIImage(systemName: "bookmark")) { action in
+                // Just showing some alert
+            print("bookmark")
+        }
+        // 5
+        return UIMenu(title: "menu", image: nil, children: [share, bookmark])
+    }    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let detailViewController = segue.destination as? ArticleDetailViewController,
             let index = NewsTable.indexPathForSelectedRow?.section
@@ -156,24 +187,6 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITableVi
                 return
         }
         detailViewController.article = articles[index]
-    }
-    
-    func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
-        let configuration = UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { actions -> UIMenu? in
-            // Creating Save button
-            let share = UIAction(title: "Share with Twitter", image: UIImage(named: "twitter")) { action in
-                // Just showing some alert
-                print("share")
-            }
-            let bookmark = UIAction(title: "Bookmark", image: UIImage(systemName: "bookmark")) { action in
-                // Just showing some alert
-                print("bookmark")
-                
-            }
-            // Creating main context menu
-            return UIMenu.init(title: "menu", children: [share, bookmark])
-        }
-        return configuration
     }
     
     func fetchArticles() {
@@ -190,7 +203,8 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITableVi
                     let time = info["diff"].string!
                     let section = info["section"].string!
                     let id = info["id"].string!
-                    let article = Article(image: image, title: title, time: time, section: section, id: id)
+                    let url = info["url"].string!
+                    let article = Article(image: image, title: title, time: time, section: section, id: id, url: url)
                     self.articles.append(article)
                 }
                 self.NewsTable.reloadData()

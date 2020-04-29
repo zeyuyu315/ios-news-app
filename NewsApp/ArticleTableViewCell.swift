@@ -15,6 +15,7 @@ class ArticleTableViewCell: UITableViewCell {
     @IBOutlet var time: UILabel!
     @IBOutlet var section: UILabel!
     var id = ""
+    var url = ""
     
     func setArticle(article: Article) {
         articleImage.loadURL(url: URL(string: article.image)!)
@@ -23,6 +24,7 @@ class ArticleTableViewCell: UITableViewCell {
         time.text = article.time
         section.text = "| " + article.section
         id = article.id
+        url = article.url
         self.layoutSubviews()
     }
     
