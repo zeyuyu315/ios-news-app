@@ -9,13 +9,33 @@
 import UIKit
 
 class ArticleTableViewCell: UITableViewCell {
-
+    
+    let defaults = UserDefaults.standard
     @IBOutlet var articleImage: URLimageView!
     @IBOutlet var title: UILabel!
     @IBOutlet var time: UILabel!
     @IBOutlet var section: UILabel!
     var id = ""
     var url = ""
+    @IBOutlet var favIcon: UIButton!
+    
+    @IBAction func ClickFav(_ sender: Any) {
+        let saved = defaults.object(forKey: id) != nil
+        debugPrint(saved)
+        if saved {
+            favIcon.setImage(UIImage(systemName: "bookmark"), for: [])
+            defaults.removeObject(forKey: id)
+        } else {
+            favIcon.setImage(UIImage(systemName: "bookmark.fill"), for: [])
+            let encodedData = try? NSKeyedArchiver.archivedData(withRootObject: , requiringSecureCoding: false)
+            guard let data = encodedData else {
+                print("Im here")
+                return
+            }
+            self.defaults.set(data, forKey: self.id)
+            debugPrint(defaults.object(forKey: id) != nil)
+        }
+    }
     
     func setArticle(article: Article) {
         articleImage.loadURL(url: URL(string: article.image)!)
