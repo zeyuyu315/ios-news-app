@@ -328,12 +328,17 @@
                                     <action selector="TwitterButton:" destination="5B4-KO-Zmm" id="bgM-yF-gca"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem title="bookmark" image="bookmark" catalog="system" style="plain" id="1sc-ij-tqZ"/>
+                            <barButtonItem title="bookmark" image="bookmark" catalog="system" style="plain" id="1sc-ij-tqZ">
+                                <connections>
+                                    <action selector="clickFav:" destination="5B4-KO-Zmm" id="XON-na-Mh7"/>
+                                </connections>
+                            </barButtonItem>
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
                         <outlet property="detailDescription" destination="pe8-fc-cxY" id="Hkr-og-ujN"/>
                         <outlet property="detailTitle" destination="V0z-IY-vfQ" id="eTC-eE-pBZ"/>
+                        <outlet property="favIcon" destination="1sc-ij-tqZ" id="aKa-sb-mDG"/>
                         <outlet property="image" destination="l6u-tC-e3o" id="SVK-Ju-Q0l"/>
                         <outlet property="section" destination="Aea-B1-7j8" id="YWS-CP-GKt"/>
                         <outlet property="time" destination="Z6M-GO-Ae3" id="ctr-s3-aNc"/>
@@ -387,6 +392,9 @@
                                                     <rect key="frame" x="355" y="87" width="39" height="22"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <state key="normal" image="bookmark" catalog="system"/>
+                                                    <connections>
+                                                        <action selector="ClickFav:" destination="MqX-Sr-V8T" eventType="touchUpInside" id="YaC-U5-6MT"/>
+                                                    </connections>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qbm-b1-0sc">
                                                     <rect key="frame" x="128" y="93" width="67" height="16"/>
@@ -401,6 +409,7 @@
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <outlet property="articleImage" destination="XLm-7e-Rjj" id="4Oo-LS-k4s"/>
+                                            <outlet property="favIcon" destination="qfY-PW-NDG" id="JhJ-pI-KaI"/>
                                             <outlet property="section" destination="SaY-WT-6p8" id="F8b-zK-lfU"/>
                                             <outlet property="time" destination="qbm-b1-0sc" id="9M4-gb-wd8"/>
                                             <outlet property="title" destination="vIb-NS-3Wn" id="sz2-1H-E5l"/>

@@ -47,7 +47,6 @@ class HeadlinesViewController: ButtonBarPagerTabStripViewController, UISearchRes
         search.searchResultsUpdater = self
         search.searchBar.placeholder = "Enter keyword.."
         navigationItem.searchController = search
-//        navigationController?.navigationBar.sizeToFit()
         navigationItem.hidesSearchBarWhenScrolling = false
         // Do any additional setup after loading the view.
     }

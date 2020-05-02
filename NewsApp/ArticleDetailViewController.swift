@@ -10,6 +10,7 @@ import UIKit
 import Alamofire
 import SwiftyJSON
 import SwiftSpinner
+import Toast_Swift
 
 class ArticleDetailViewController: UIViewController {
     
@@ -18,6 +19,36 @@ class ArticleDetailViewController: UIViewController {
     @IBOutlet var section: UILabel!
     @IBOutlet var time: UILabel!
     @IBOutlet var detailDescription: UILabel!
+    @IBOutlet var favIcon: UIBarButtonItem!
+    let defaults = UserDefaults.standard
+    
+    @IBAction func clickFav(_ sender: UIBarButtonItem) {
+        let id = article!.id
+        let saved = defaults.object(forKey: id) != nil
+        if saved {
+            favIcon.image = UIImage(systemName: "bookmark")
+            defaults.removeObject(forKey: id)
+            self.view.makeToast("Article Bookmarked. Check out the Bookmarks tab to view", duration: 3.0, position: .bottom)
+        } else {
+            favIcon.image = UIImage(systemName: "bookmark.fill")
+            if let encoded = try? JSONEncoder().encode(article) {
+                UserDefaults.standard.set(encoded, forKey: id)
+            }
+            self.view.makeToast("Article Removed from Bookmarks", duration: 3.0, position: .bottom)
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        let id = article!.id
+        let saved = defaults.object(forKey: id) != nil
+        if saved {
+            favIcon.image = UIImage(systemName: "bookmark.fill")
+        } else {
+            favIcon.image = UIImage(systemName: "bookmark")
+        }
+    }
+    
+    
     @IBAction func ViewButton(_ sender: Any) {
         let redirectURL = URL(string: self.link)
         UIApplication.shared.open(redirectURL!)

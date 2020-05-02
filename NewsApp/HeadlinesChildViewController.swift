@@ -37,12 +37,16 @@ class HeadlinesChildViewController: UIViewController, UITableViewDataSource, UIT
         bgColorView.backgroundColor = UIColor.clear
         cell.selectedBackgroundView = bgColorView
         cell.selectedBackgroundView?.layer.cornerRadius = 11
+        cell.headlinelink = self
         return cell
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        SwiftSpinner.hide()
         return 1
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        NewsTable.reloadData()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -132,16 +136,22 @@ class HeadlinesChildViewController: UIViewController, UITableViewDataSource, UIT
                         self.articles.append(article)
                     }
                     self.NewsTable.reloadData()
+                    DispatchQueue.main.async{
+                       SwiftSpinner.hide()
+                    }
                 case .failure(let error):
                     print(error)
                 }
             }
-    //        DispatchQueue.main.async {
-    //            SwiftSpinner.hide()
-    //        }
         }
     
+    func favClick() {
+        self.view.makeToast("Article Bookmarked. Check out the Bookmarks tab to view", duration: 3.0, position: .bottom)
+    }
     
+    func unFavClick() {
+        self.view.makeToast("Article Removed from Bookmarks", duration: 3.0, position: .bottom)
+    }
 
     /*
     // MARK: - Navigation
