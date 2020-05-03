@@ -22,7 +22,7 @@ class ArticleTableViewCell: UITableViewCell, UIContextMenuInteractionDelegate {
     var article: Article?
     var homelink: HomeViewController?
     var headlinelink: HeadlinesChildViewController?
-    
+    var resultlink: ResultViewController?
     
     @IBAction func ClickFav(_ sender: Any) {
         let saved = defaults.object(forKey: id) != nil
@@ -36,6 +36,7 @@ class ArticleTableViewCell: UITableViewCell, UIContextMenuInteractionDelegate {
             defaults.set(savedArray, forKey: "savedArray")
             homelink?.unFavClick()
             headlinelink?.unFavClick()
+            resultlink?.unFavClick()
         } else {
             favIcon.setImage(UIImage(systemName: "bookmark.fill"), for: [])
             if let encoded = try? JSONEncoder().encode(article) {
@@ -50,6 +51,7 @@ class ArticleTableViewCell: UITableViewCell, UIContextMenuInteractionDelegate {
             defaults.set(savedArray, forKey: "savedArray")
             homelink?.favClick()
             headlinelink?.favClick()
+            resultlink?.favClick()
         }
     }
     

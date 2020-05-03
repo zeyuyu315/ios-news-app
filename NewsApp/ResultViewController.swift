@@ -7,15 +7,106 @@
 //
 
 import UIKit
+import SwiftyJSON
+import Alamofire
+import Foundation
+import SwiftSpinner
 
-class ResultViewController: UIViewController {
-    var search: String?
-
+class ResultViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+    var search: String = ""
+    @IBOutlet var NewsTable: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(search)
+        SwiftSpinner.show("Loading Search results..")
+        super.viewDidLoad()
+        NewsTable.dataSource = self
+        NewsTable.delegate = self
+        NewsTable.separatorColor = UIColor.clear
+        fetchArticles()
+        refreshControl.addTarget(self, action: #selector(didPullToRefresh), for: .valueChanged)
+        NewsTable.addSubview(refreshControl)
         // Do any additional setup after loading the view.
     }
+    
+    var articles = [Article]()
+    var refreshControl = UIRefreshControl()
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return articles.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "NewsItem") as! ArticleTableViewCell
+        do {
+            let article = articles[indexPath.section]
+            cell.setArticle(article: article)
+        }
+        cell.contentView.layer.cornerRadius = 10
+        cell.contentView.layer.borderWidth = 1
+        cell.contentView.layer.borderColor = UIColor.lightGray.cgColor
+        let bgColorView = UIView()
+        bgColorView.backgroundColor = UIColor.clear
+        cell.selectedBackgroundView = bgColorView
+        cell.selectedBackgroundView?.layer.cornerRadius = 11
+        cell.resultlink = self
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let detailViewController = segue.destination as? ArticleDetailViewController,
+            let index = NewsTable.indexPathForSelectedRow?.section
+            else {
+                return
+        }
+        detailViewController.article = articles[index]
+    }
+    
+    @objc func didPullToRefresh() {
+        fetchArticles()
+        self.refreshControl.endRefreshing()
+    }
+    
+    func favClick() {
+        self.view.makeToast("Article Bookmarked. Check out the Bookmarks tab to view", duration: 3.0, position: .bottom)
+    }
+    
+    func unFavClick() {
+        self.view.makeToast("Article Removed from Bookmarks", duration: 3.0, position: .bottom)
+    }
+    
+    func fetchArticles() {
+        self.articles.removeAll()
+        AF.request("https://my-first-gcp-project-271002.appspot.com/IOSsearch/IOSresults/\(search )").responseJSON {
+            response in switch response.result {
+            case .success(let value):
+                let json = JSON(value)
+                for item in json {
+                    let info = item.1
+                    let title = info["title"].string!
+                    let image = info["image"].string!
+                    let time = info["time"].string!
+                    let diff = info["diff"].string!
+                    let section = info["section"].string!
+                    let id = info["id"].string!
+                    let url = info["url"].string!
+                    let article = Article(image: image, title: title, time: time, section: section, id: id, url: url, diff: diff)
+                    self.articles.append(article)
+                }
+                DispatchQueue.main.async{
+                   self.NewsTable.reloadData()
+                   SwiftSpinner.hide()
+                }
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+    
     
 
     /*

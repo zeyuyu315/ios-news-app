@@ -36,31 +36,28 @@ class AutoSuggestTableViewController: UITableViewController, UISearchResultsUpda
     }
     
     func getData() {
-//        var newDataSource: [String] = []
-        self.dataSource = ["amazon", "animal jam", "apex legends", "abc7", "apkpure", "abcmouse", "apple", "american express"]
-        self.tableView.reloadData()
-//        let headers: HTTPHeaders =  [
-//            "Ocp-Apim-Subscription-Key": "df49b0cf1d55421891688ea81f84f0b3"
-//        ]
-//
-//        AF.request("https://api.cognitive.microsoft.com/bing/v7.0/suggestions?q=\(search)", headers: headers).responseJSON {
-//            response in switch response.result {
-//            case .success(let value):
-//                let json = JSON(value)
-//                let searchSuggestions = json["suggestionGroups"][0]["searchSuggestions"]
-//                for suggestion in searchSuggestions {
-//                    let suggestItem = suggestion.1
-//                    newDataSource.append( suggestItem["displayText"].string!)
-//                }
-//                self.dataSource = newDataSource
-//                debugPrint(self.dataSource)
-//                DispatchQueue.main.async {
-//                    self.tableView.reloadData()
-//                }
-//            case .failure(let error):
-//                print(error)
-//            }
-//        }
+        var newDataSource: [String] = []
+        let headers: HTTPHeaders =  [
+            "Ocp-Apim-Subscription-Key": "df49b0cf1d55421891688ea81f84f0b3"
+        ]
+
+        AF.request("https://api.cognitive.microsoft.com/bing/v7.0/suggestions?q=\(search)", headers: headers).responseJSON {
+            response in switch response.result {
+            case .success(let value):
+                let json = JSON(value)
+                let searchSuggestions = json["suggestionGroups"][0]["searchSuggestions"]
+                for suggestion in searchSuggestions {
+                    let suggestItem = suggestion.1
+                    newDataSource.append( suggestItem["displayText"].string!)
+                }
+                self.dataSource = newDataSource
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
 
     // MARK: - Table view data source
