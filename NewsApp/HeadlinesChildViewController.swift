@@ -84,7 +84,6 @@ class HeadlinesChildViewController: UIViewController, UITableViewDataSource, UIT
     
     func fetchArticles() {
             self.articles.removeAll()
-            self.NewsTable.reloadData()
             AF.request("https://my-first-gcp-project-271002.appspot.com/\(section)").responseJSON {
                 response in switch response.result {
                 case .success(let value):
@@ -101,8 +100,8 @@ class HeadlinesChildViewController: UIViewController, UITableViewDataSource, UIT
                         let article = Article(image: image, title: title, time: time, section: section, id: id, url: url, diff: diff)
                         self.articles.append(article)
                     }
-                    self.NewsTable.reloadData()
                     DispatchQueue.main.async{
+                       self.NewsTable.reloadData()
                        SwiftSpinner.hide()
                     }
                 case .failure(let error):

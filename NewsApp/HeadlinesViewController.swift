@@ -9,12 +9,7 @@
 import UIKit
 import XLPagerTabStrip
 
-class HeadlinesViewController: ButtonBarPagerTabStripViewController, UISearchResultsUpdating{
-    
-    func updateSearchResults(for searchController: UISearchController) {
-        guard let text = searchController.searchBar.text else { return }
-        print(text)
-    }
+class HeadlinesViewController: ButtonBarPagerTabStripViewController {
     
     override func viewControllers(for pagerTabStripController: PagerTabStripViewController) -> [UIViewController] {
 
@@ -40,11 +35,12 @@ class HeadlinesViewController: ButtonBarPagerTabStripViewController, UISearchRes
     }
     
     override func viewDidLoad() {
-        
         configureButtonBar()
         super.viewDidLoad()
-        let search = UISearchController(searchResultsController: nil)
-        search.searchResultsUpdater = self
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let resultsController = storyboard.instantiateViewController(withIdentifier: "AutoSuggest") as! AutoSuggestTableViewController
+        let search = UISearchController(searchResultsController: resultsController )
+        search.searchResultsUpdater = resultsController
         search.searchBar.placeholder = "Enter keyword.."
         navigationItem.searchController = search
         navigationItem.hidesSearchBarWhenScrolling = false

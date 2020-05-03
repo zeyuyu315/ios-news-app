@@ -13,7 +13,8 @@ import Alamofire
 import Foundation
 import SwiftSpinner
 
-class HomeViewController: UIViewController, CLLocationManagerDelegate, UITableViewDataSource, UITableViewDelegate, UISearchResultsUpdating{
+class HomeViewController: UIViewController, CLLocationManagerDelegate, UITableViewDataSource, UITableViewDelegate {
+    
     
     @IBOutlet var WeatherImage: UIImageView!
     @IBOutlet var city: UILabel!
@@ -38,8 +39,10 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITableVi
     override func viewDidLoad() {
         super.viewDidLoad()
         SwiftSpinner.show("Loading Home Page..")
-        let search = UISearchController(searchResultsController: nil)
-        search.searchResultsUpdater = self
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let resultsController = storyboard.instantiateViewController(withIdentifier: "AutoSuggest") as! AutoSuggestTableViewController
+        let search = UISearchController(searchResultsController: resultsController )
+        search.searchResultsUpdater = resultsController
         search.searchBar.placeholder = "Enter keyword.."
         navigationItem.searchController = search
         navigationController?.navigationBar.sizeToFit()
@@ -59,11 +62,6 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITableVi
     
     override func viewWillAppear(_ animated: Bool) {
         NewsTable.reloadData()
-    }
-    
-    func updateSearchResults(for searchController: UISearchController) {
-        guard let text = searchController.searchBar.text else { return }
-        print(text)
     }
     
     
@@ -164,7 +162,6 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITableVi
     
     func fetchArticles() {
         self.articles.removeAll()
-        self.NewsTable.reloadData()
         AF.request("https://my-first-gcp-project-271002.appspot.com/IOShomepage").responseJSON {
             response in switch response.result {
             case .success(let value):
@@ -181,8 +178,8 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITableVi
                     let article = Article(image: image, title: title, time: time, section: section, id: id, url: url, diff: diff)
                     self.articles.append(article)
                 }
-                self.NewsTable.reloadData()
                 DispatchQueue.main.async{
+                   self.NewsTable.reloadData()
                    SwiftSpinner.hide()
                 }
             case .failure(let error):
