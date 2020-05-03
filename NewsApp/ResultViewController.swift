@@ -71,6 +71,10 @@ class ResultViewController: UIViewController, UITableViewDataSource, UITableView
         self.refreshControl.endRefreshing()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        NewsTable.reloadData()
+    }
+    
     func favClick() {
         self.view.makeToast("Article Bookmarked. Check out the Bookmarks tab to view", duration: 3.0, position: .bottom)
     }
@@ -81,7 +85,8 @@ class ResultViewController: UIViewController, UITableViewDataSource, UITableView
     
     func fetchArticles() {
         var tempArticles : [Article] = []
-        AF.request("https://my-first-gcp-project-271002.appspot.com/IOSsearch/IOSresults/\(search )").responseJSON {
+        let escapedString = search.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
+        AF.request("https://my-first-gcp-project-271002.appspot.com/IOSsearch/IOSresults/\(escapedString!)").responseJSON {
             response in switch response.result {
             case .success(let value):
                 let json = JSON(value)
