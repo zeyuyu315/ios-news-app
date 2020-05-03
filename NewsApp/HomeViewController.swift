@@ -60,9 +60,11 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITableVi
         NotificationCenter.default.addObserver(self, selector: #selector(getResult), name: Notification.Name("searchClicked"), object: nil)
     }
     
-    @objc func getResult() {
+    @objc func getResult(notification: NSNotification) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "ResultView") as! ResultViewController
+        let search = notification.userInfo!["search"]
+        controller.search = (search as! String)
         navigationController?.pushViewController(controller, animated: true)
     }
     

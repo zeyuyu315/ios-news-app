@@ -83,7 +83,8 @@ class AutoSuggestTableViewController: UITableViewController, UISearchResultsUpda
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let searchText = dataSource[indexPath.row]
-        NotificationCenter.default.post(name: Notification.Name("searchClicked"), object: nil)
+        let dic = ["search": searchText]
+        NotificationCenter.default.post(name: Notification.Name("searchClicked"), object: nil, userInfo: dic)
     }
     
     

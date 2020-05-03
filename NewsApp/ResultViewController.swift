@@ -10,7 +10,6 @@ import UIKit
 
 class ResultViewController: UIViewController {
     var search: String?
-    
 
     override func viewDidLoad() {
         super.viewDidLoad()
