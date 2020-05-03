@@ -45,6 +45,7 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITableVi
         navigationController?.navigationBar.sizeToFit()
         NewsTable.dataSource = self
         NewsTable.delegate = self
+        NewsTable.separatorColor = UIColor.clear
         fetchArticles()
         WeatherImage.layer.cornerRadius = 10
         WeatherImage.clipsToBounds = true
@@ -57,8 +58,6 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITableVi
     }
     
     override func viewWillAppear(_ animated: Bool) {
-//        NewsTable.dataSource = self
-//        NewsTable.delegate = self
         NewsTable.reloadData()
     }
     
@@ -154,52 +153,6 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITableVi
         return cell
     }
     
-//    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-//        let index = indexPath.section
-//        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil, actionProvider: { suggestedActions in
-//            return self.makeContextMenu(index: index)
-//        })
-//    }
-//
-//    func makeContextMenu(index: Int) -> UIMenu {
-//        let share = UIAction(title: "Share with Twitter", image: UIImage(named: "twitter")) { action in
-//            let tweetText = "Check out this Article!"
-//            let tweetUrl = self.articles[index].url
-//            let tweetHashtags = "CSCI_571_NewsApp"
-//
-//            let shareString = "https://twitter.com/intent/tweet?text=\(tweetText)&url=\(tweetUrl)&hashtags=\(tweetHashtags)"
-//
-//            // encode a space to %20 for example
-//            let escapedShareString = shareString.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
-//
-//            // cast to an url
-//            let url = URL(string: escapedShareString)
-//
-//            // open in safari
-//            UIApplication.shared.open(url!)
-//        }
-//
-//        let id = self.articles[index].id
-//        let saved = defaults.object(forKey: id) != nil
-//        var bookmark : UIAction!
-//        if saved {
-//            bookmark = UIAction(title: "Unbookmark", image: UIImage(systemName: "bookmark.fill")) { action in
-//                self.defaults.removeObject(forKey: id)
-//                self.unFavClick()
-//            }
-//        } else {
-//            bookmark = UIAction(title: "Bookmark", image: UIImage(systemName: "bookmark")) { action in
-//                    // Just showing some alert
-//                if let encoded = try? JSONEncoder().encode(self.articles[index]) {
-//                    self.defaults.set(encoded, forKey: id)
-//                }
-//                self.favClick()
-//                self.NewsTable.reloadData()
-//            }
-//        }
-//        return UIMenu(title: "menu", image: nil, children: [share, bookmark])
-//    }
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let detailViewController = segue.destination as? ArticleDetailViewController,
             let index = NewsTable.indexPathForSelectedRow?.section
@@ -220,11 +173,12 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITableVi
                     let info = item.1
                     let title = info["title"].string!
                     let image = info["image"].string!
-                    let time = info["diff"].string!
+                    let time = info["time"].string!
+                    let diff = info["diff"].string!
                     let section = info["section"].string!
                     let id = info["id"].string!
                     let url = info["url"].string!
-                    let article = Article(image: image, title: title, time: time, section: section, id: id, url: url)
+                    let article = Article(image: image, title: title, time: time, section: section, id: id, url: url, diff: diff)
                     self.articles.append(article)
                 }
                 self.NewsTable.reloadData()
@@ -239,7 +193,6 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITableVi
     
     func favClick() {
         self.view.makeToast("Article Bookmarked. Check out the Bookmarks tab to view", duration: 3.0, position: .bottom)
-        
     }
     
     func unFavClick() {

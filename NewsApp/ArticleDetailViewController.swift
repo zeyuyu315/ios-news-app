@@ -28,12 +28,24 @@ class ArticleDetailViewController: UIViewController {
         if saved {
             favIcon.image = UIImage(systemName: "bookmark")
             defaults.removeObject(forKey: id)
+            var savedArray = defaults.object(forKey: "savedArray") as? [String] ?? [String]()
+            if let index = savedArray.firstIndex(of: id) {
+                savedArray.remove(at: index)
+            }
+            defaults.set(savedArray, forKey: "savedArray")
             self.view.makeToast("Article Bookmarked. Check out the Bookmarks tab to view", duration: 3.0, position: .bottom)
         } else {
             favIcon.image = UIImage(systemName: "bookmark.fill")
             if let encoded = try? JSONEncoder().encode(article) {
                 UserDefaults.standard.set(encoded, forKey: id)
             }
+            let array = defaults.array(forKey: "savedArray")
+            if array == nil {
+                defaults.set([], forKey: "savedArray")
+            }
+            var savedArray = defaults.object(forKey: "savedArray") as? [String] ?? [String]()
+            savedArray.append(id)
+            defaults.set(savedArray, forKey: "savedArray")
             self.view.makeToast("Article Removed from Bookmarks", duration: 3.0, position: .bottom)
         }
     }

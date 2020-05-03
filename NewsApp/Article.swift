@@ -16,13 +16,15 @@ class Article: Codable {
     var section: String
     var id: String
     var url: String
+    var diff: String
     
-    init(image: String, title: String, time: String, section: String, id: String, url:String) {
+    init(image: String, title: String, time: String, section: String, id: String, url:String, diff:String) {
         self.image = image
         self.title = title
         self.time = time
         self.section = section
         self.id = id
         self.url = url
+        self.diff = diff
     }
 }

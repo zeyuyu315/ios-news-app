@@ -58,42 +58,6 @@ class HeadlinesChildViewController: UIViewController, UITableViewDataSource, UIT
         detailViewController.article = articles[index]
     }
     
-    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        let index = indexPath.section
-        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil, actionProvider: { suggestedActions in
-            return self.makeContextMenu(index: index)
-        })
-    }
-    
-    func makeContextMenu(index: Int) -> UIMenu {
-        let share = UIAction(title: "Share with Twitter", image: UIImage(named: "twitter")) { action in
-            let tweetText = "Check out this Article!"
-            let tweetUrl = self.articles[index].url
-            let tweetHashtags = "CSCI_571_NewsApp"
-
-            let shareString = "https://twitter.com/intent/tweet?text=\(tweetText)&url=\(tweetUrl)&hashtags=\(tweetHashtags)"
-
-            // encode a space to %20 for example
-            let escapedShareString = shareString.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
-
-            // cast to an url
-            let url = URL(string: escapedShareString)
-
-            // open in safari
-            UIApplication.shared.open(url!)
-        }
-        
-        // 4
-        let bookmark = UIAction(title: "Bookmark", image: UIImage(systemName: "bookmark")) { action in
-                // Just showing some alert
-            print("bookmark")
-        }
-        // 5
-        return UIMenu(title: "menu", image: nil, children: [share, bookmark])
-    }
-    
-    
-    
     var section: String = ""
 
     override func viewDidLoad() {
@@ -101,6 +65,7 @@ class HeadlinesChildViewController: UIViewController, UITableViewDataSource, UIT
         super.viewDidLoad()
         NewsTable.dataSource = self
         NewsTable.delegate = self
+        NewsTable.separatorColor = UIColor.clear
         fetchArticles()
         refreshControl.addTarget(self, action: #selector(didPullToRefresh), for: .valueChanged)
         NewsTable.addSubview(refreshControl)
@@ -128,11 +93,12 @@ class HeadlinesChildViewController: UIViewController, UITableViewDataSource, UIT
                         let info = item.1
                         let title = info["title"].string!
                         let image = info["image"].string!
-                        let time = info["diff"].string!
+                        let time = info["time"].string!
+                        let diff = info["diff"].string!
                         let section = info["section"].string!
                         let id = info["id"].string!
                         let url = info["url"].string!
-                        let article = Article(image: image, title: title, time: time, section: section, id: id, url: url)
+                        let article = Article(image: image, title: title, time: time, section: section, id: id, url: url, diff: diff)
                         self.articles.append(article)
                     }
                     self.NewsTable.reloadData()

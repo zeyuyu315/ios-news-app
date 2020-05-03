@@ -4,6 +4,7 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -63,14 +64,94 @@
                     <view key="view" contentMode="scaleToFill" id="5Q7-bx-r54">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="FVa-mq-j8T">
+                                <rect key="frame" x="10" y="88" width="394" height="725"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="ote-uB-Vc6">
+                                    <size key="itemSize" width="192" height="280"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="TopLeft" reuseIdentifier="BookmarkItem" id="ig8-zg-ijc" customClass="ArticleCollectionViewCell" customModule="CPHW9" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="192" height="280"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFill" insetsLayoutMarginsFromSafeArea="NO" id="Ptf-sb-gn8">
+                                            <rect key="frame" x="0.0" y="0.0" width="192" height="280"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Tvn-tC-wtw" customClass="URLimageView" customModule="CPHW9" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="0.0" width="192" height="170"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Title" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mWg-z3-aBh">
+                                                    <rect key="frame" x="0.0" y="170" width="192" height="67"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Time" textAlignment="natural" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zKs-dg-U00">
+                                                    <rect key="frame" x="8" y="248" width="45" height="18"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TnW-i7-2gQ">
+                                                    <rect key="frame" x="153" y="242" width="39" height="22"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <state key="normal" image="bookmark" catalog="system"/>
+                                                    <connections>
+                                                        <action selector="ClickFav:" destination="ig8-zg-ijc" eventType="touchUpInside" id="Lr0-9d-Xsr"/>
+                                                    </connections>
+                                                </button>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="| Section" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YC9-rf-Zn5">
+                                                    <rect key="frame" x="58" y="248" width="107" height="18"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </collectionViewCellContentView>
+                                        <size key="customSize" width="192" height="280"/>
+                                        <connections>
+                                            <outlet property="articleImage" destination="Tvn-tC-wtw" id="emD-Kg-Ijj"/>
+                                            <outlet property="favIcon" destination="TnW-i7-2gQ" id="MMt-3C-sMY"/>
+                                            <outlet property="section" destination="YC9-rf-Zn5" id="gHj-K8-7Fq"/>
+                                            <outlet property="time" destination="zKs-dg-U00" id="gbK-nW-sIg"/>
+                                            <outlet property="title" destination="mWg-z3-aBh" id="cq8-OI-SJh"/>
+                                            <segue destination="5B4-KO-Zmm" kind="show" id="3cd-wn-W03"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                </cells>
+                                <connections>
+                                    <outlet property="dataSource" destination="g78-hj-x3Q" id="0Ei-Ca-Abu"/>
+                                    <outlet property="delegate" destination="g78-hj-x3Q" id="xOl-Ul-Scy"/>
+                                </connections>
+                            </collectionView>
+                        </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="DBc-wc-fsf" firstAttribute="trailing" secondItem="FVa-mq-j8T" secondAttribute="trailing" constant="10" id="B2C-F8-JPh"/>
+                            <constraint firstItem="FVa-mq-j8T" firstAttribute="leading" secondItem="DBc-wc-fsf" secondAttribute="leading" constant="10" id="Z9u-he-ePm"/>
+                            <constraint firstItem="DBc-wc-fsf" firstAttribute="bottom" secondItem="FVa-mq-j8T" secondAttribute="bottom" id="esT-sr-SQd"/>
+                            <constraint firstItem="FVa-mq-j8T" firstAttribute="top" secondItem="DBc-wc-fsf" secondAttribute="top" id="sct-wt-2gb"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="DBc-wc-fsf"/>
                     </view>
                     <navigationItem key="navigationItem" title="Bookmarks" id="Rc2-zL-zyd"/>
+                    <connections>
+                        <outlet property="NewsCollection" destination="FVa-mq-j8T" id="Bmz-Sv-liw"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nzP-2Z-E5b" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2632" y="1709"/>
+            <point key="canvasLocation" x="2630.434782608696" y="1708.9285714285713"/>
         </scene>
         <!--Home-->
         <scene sceneID="HMH-PA-h0K">
@@ -179,7 +260,7 @@
                                                         <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </state>
                                                     <connections>
-                                                        <action selector="ClickFav:" destination="6c2-Bf-7oL" eventType="touchUpInside" id="Mul-xC-xdD"/>
+                                                        <action selector="ClickFav:" destination="6c2-Bf-7oL" eventType="touchUpInside" id="GVV-uE-x3Z"/>
                                                     </connections>
                                                 </button>
                                             </subviews>
@@ -393,7 +474,7 @@
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <state key="normal" image="bookmark" catalog="system"/>
                                                     <connections>
-                                                        <action selector="ClickFav:" destination="MqX-Sr-V8T" eventType="touchUpInside" id="YaC-U5-6MT"/>
+                                                        <action selector="ClickFav:" destination="MqX-Sr-V8T" eventType="touchUpInside" id="Hk9-dh-CHI"/>
                                                     </connections>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qbm-b1-0sc">
