@@ -162,7 +162,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="SNw-Om-XNg">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="SNw-Om-XNg">
                                 <rect key="frame" x="0.0" y="28" width="414" height="43.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="SNw-Om-XNg" id="Haj-8e-yhV">
@@ -184,7 +184,7 @@
         <!--Home-->
         <scene sceneID="HMH-PA-h0K">
             <objects>
-                <viewController title="Home" id="nRx-dU-cOB" customClass="HomeViewController" customModule="CPHW9" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController restorationIdentifier="HomeView" title="Home" id="nRx-dU-cOB" customClass="HomeViewController" customModule="CPHW9" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Q6Y-Hl-bBs">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -328,18 +328,41 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="afS-MO-mk5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-139.13043478260872" y="1708.9285714285713"/>
+            <point key="canvasLocation" x="-145" y="1709"/>
+        </scene>
+        <!--Search Results-->
+        <scene sceneID="2mb-rd-0sG">
+            <objects>
+                <viewController storyboardIdentifier="ResultView" id="hyx-Lo-sEW" customClass="ResultViewController" customModule="CPHW9" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="BGW-oM-JaC">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="DCF-sr-hcQ">
+                                <rect key="frame" x="8" y="140" width="398" height="756"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="kGN-zX-lDc"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Search Results" id="XQM-WN-yPf"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="nVE-nV-UHQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-36.231884057971016" y="2419.4196428571427"/>
         </scene>
         <!--Article Detail View Controller-->
         <scene sceneID="OL8-y2-W2D">
             <objects>
                 <viewController id="5B4-KO-Zmm" customClass="ArticleDetailViewController" customModule="CPHW9" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleAspectFill" id="4JY-4e-7BA">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Qt-SH-7pV">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="725"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bxq-GR-Bii">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="509.5"/>
@@ -455,7 +478,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WLz-Cw-yd2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-144.92753623188406" y="2430.1339285714284"/>
+            <point key="canvasLocation" x="765.21739130434787" y="2430.1339285714284"/>
         </scene>
         <!--Headlines Child View Controller-->
         <scene sceneID="8Yi-dn-IQX">
@@ -543,7 +566,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KMr-lW-e8q" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="676.81159420289862" y="2430.1339285714284"/>
+            <point key="canvasLocation" x="1586.9565217391305" y="2428.7946428571427"/>
         </scene>
         <!--Trending-->
         <scene sceneID="XSb-oq-DpJ">
@@ -692,9 +715,27 @@
             </objects>
             <point key="canvasLocation" x="1657.9710144927537" y="898.66071428571422"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="qIt-0i-FvU">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="QKw-Lf-G80" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="a6t-oU-4Ql">
+                        <rect key="frame" x="0.0" y="44" width="414" height="96"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="hyx-Lo-sEW" kind="relationship" relationship="rootViewController" id="UO1-Bd-Kc0"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="GKZ-lg-q6t" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-946.37681159420299" y="2419.4196428571427"/>
+        </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="wft-wu-z5T"/>
+        <segue reference="eG5-WC-qnC"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="bookmark" catalog="system" width="112" height="128"/>

@@ -15,7 +15,6 @@ import SwiftSpinner
 
 class HomeViewController: UIViewController, CLLocationManagerDelegate, UITableViewDataSource, UITableViewDelegate {
     
-    
     @IBOutlet var WeatherImage: UIImageView!
     @IBOutlet var city: UILabel!
     @IBOutlet var state: UILabel!
@@ -58,6 +57,13 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITableVi
         locationManager?.requestWhenInUseAuthorization()
         refreshControl.addTarget(self, action: #selector(didPullToRefresh), for: .valueChanged)
         NewsTable.addSubview(refreshControl)
+        NotificationCenter.default.addObserver(self, selector: #selector(getResult), name: Notification.Name("searchClicked"), object: nil)
+    }
+    
+    @objc func getResult() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "ResultView") as! ResultViewController
+        navigationController?.pushViewController(controller, animated: true)
     }
     
     override func viewWillAppear(_ animated: Bool) {

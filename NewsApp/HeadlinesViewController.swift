@@ -45,6 +45,13 @@ class HeadlinesViewController: ButtonBarPagerTabStripViewController {
         navigationItem.searchController = search
         navigationItem.hidesSearchBarWhenScrolling = false
         // Do any additional setup after loading the view.
+        NotificationCenter.default.addObserver(self, selector: #selector(getResult), name: Notification.Name("searchClicked"), object: nil)
+    }
+    
+    @objc func getResult() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "ResultView") as! ResultViewController
+        navigationController?.pushViewController(controller, animated: true)
     }
     
     func configureButtonBar() {

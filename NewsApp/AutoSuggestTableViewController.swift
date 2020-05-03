@@ -14,12 +14,11 @@ import SwiftSpinner
 class AutoSuggestTableViewController: UITableViewController, UISearchResultsUpdating{
     
     var search = ""
-    var originalDataSource : [String] = []
     var dataSource : [String] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -29,62 +28,65 @@ class AutoSuggestTableViewController: UITableViewController, UISearchResultsUpda
     
     func updateSearchResults(for searchController: UISearchController) {
         let searchText = searchController.searchBar.text!
-        
+        search = searchText
         //Do Stuff with the string
-        
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
+        if search != "" {
+            getData()
         }
     }
     
     func getData() {
-        self.articles.removeAll()
-        AF.request("https://my-first-gcp-project-271002.appspot.com/\(section)").responseJSON {
-            response in switch response.result {
-            case .success(let value):
-                let json = JSON(value)
-                for item in json {
-                    let info = item.1
-                    let title = info["title"].string!
-                    let image = info["image"].string!
-                    let time = info["time"].string!
-                    let diff = info["diff"].string!
-                    let section = info["section"].string!
-                    let id = info["id"].string!
-                    let url = info["url"].string!
-                    let article = Article(image: image, title: title, time: time, section: section, id: id, url: url, diff: diff)
-                    self.articles.append(article)
-                }
-                DispatchQueue.main.async{
-                   self.NewsTable.reloadData()
-                   SwiftSpinner.hide()
-                }
-            case .failure(let error):
-                print(error)
-            }
+//        var newDataSource: [String] = []
+        self.dataSource = ["amazon", "animal jam", "apex legends", "abc7", "apkpure", "abcmouse", "apple", "american express"]
+        self.tableView.reloadData()
+//        let headers: HTTPHeaders =  [
+//            "Ocp-Apim-Subscription-Key": "df49b0cf1d55421891688ea81f84f0b3"
+//        ]
+//
+//        AF.request("https://api.cognitive.microsoft.com/bing/v7.0/suggestions?q=\(search)", headers: headers).responseJSON {
+//            response in switch response.result {
+//            case .success(let value):
+//                let json = JSON(value)
+//                let searchSuggestions = json["suggestionGroups"][0]["searchSuggestions"]
+//                for suggestion in searchSuggestions {
+//                    let suggestItem = suggestion.1
+//                    newDataSource.append( suggestItem["displayText"].string!)
+//                }
+//                self.dataSource = newDataSource
+//                debugPrint(self.dataSource)
+//                DispatchQueue.main.async {
+//                    self.tableView.reloadData()
+//                }
+//            case .failure(let error):
+//                print(error)
+//            }
+//        }
     }
 
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return dataSource.count
     }
 
-    /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        cell.textLabel?.text = dataSource[indexPath.row]
         return cell
     }
-    */
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let searchText = dataSource[indexPath.row]
+        NotificationCenter.default.post(name: Notification.Name("searchClicked"), object: nil)
+    }
+    
+    
 
     /*
     // Override to support conditional editing of the table view.
