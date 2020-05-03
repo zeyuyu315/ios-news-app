@@ -83,33 +83,33 @@ class HeadlinesChildViewController: UIViewController, UITableViewDataSource, UIT
     }
     
     func fetchArticles() {
-            self.articles.removeAll()
-            self.NewsTable.reloadData()
-            AF.request("https://my-first-gcp-project-271002.appspot.com/\(section)").responseJSON {
-                response in switch response.result {
-                case .success(let value):
-                    let json = JSON(value)
-                    for item in json {
-                        let info = item.1
-                        let title = info["title"].string!
-                        let image = info["image"].string!
-                        let time = info["time"].string!
-                        let diff = info["diff"].string!
-                        let section = info["section"].string!
-                        let id = info["id"].string!
-                        let url = info["url"].string!
-                        let article = Article(image: image, title: title, time: time, section: section, id: id, url: url, diff: diff)
-                        self.articles.append(article)
-                    }
-                    DispatchQueue.main.async{
-                       self.NewsTable.reloadData()
-                       SwiftSpinner.hide()
-                    }
-                case .failure(let error):
-                    print(error)
+        var tempArticles : [Article] = []
+        AF.request("https://my-first-gcp-project-271002.appspot.com/\(section)").responseJSON {
+            response in switch response.result {
+            case .success(let value):
+                let json = JSON(value)
+                for item in json {
+                    let info = item.1
+                    let title = info["title"].string!
+                    let image = info["image"].string!
+                    let time = info["time"].string!
+                    let diff = info["diff"].string!
+                    let section = info["section"].string!
+                    let id = info["id"].string!
+                    let url = info["url"].string!
+                    let article = Article(image: image, title: title, time: time, section: section, id: id, url: url, diff: diff)
+                    tempArticles.append(article)
                 }
+                DispatchQueue.main.async{
+                    self.articles = tempArticles
+                    self.NewsTable.reloadData()
+                    SwiftSpinner.hide()
+                }
+            case .failure(let error):
+                print(error)
             }
         }
+    }
     
     func favClick() {
         self.view.makeToast("Article Bookmarked. Check out the Bookmarks tab to view", duration: 3.0, position: .bottom)

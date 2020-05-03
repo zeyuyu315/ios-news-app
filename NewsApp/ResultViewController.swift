@@ -80,8 +80,7 @@ class ResultViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     func fetchArticles() {
-        self.articles.removeAll()
-        self.NewsTable.reloadData()
+        var tempArticles : [Article] = []
         AF.request("https://my-first-gcp-project-271002.appspot.com/IOSsearch/IOSresults/\(search )").responseJSON {
             response in switch response.result {
             case .success(let value):
@@ -96,11 +95,12 @@ class ResultViewController: UIViewController, UITableViewDataSource, UITableView
                     let id = info["id"].string!
                     let url = info["url"].string!
                     let article = Article(image: image, title: title, time: time, section: section, id: id, url: url, diff: diff)
-                    self.articles.append(article)
+                    tempArticles.append(article)
                 }
                 DispatchQueue.main.async{
-                   self.NewsTable.reloadData()
-                   SwiftSpinner.hide()
+                    self.articles = tempArticles
+                    self.NewsTable.reloadData()
+                    SwiftSpinner.hide()
                 }
             case .failure(let error):
                 print(error)
