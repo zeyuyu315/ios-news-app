@@ -81,6 +81,7 @@ class ResultViewController: UIViewController, UITableViewDataSource, UITableView
     
     func fetchArticles() {
         self.articles.removeAll()
+        self.NewsTable.reloadData()
         AF.request("https://my-first-gcp-project-271002.appspot.com/IOSsearch/IOSresults/\(search )").responseJSON {
             response in switch response.result {
             case .success(let value):

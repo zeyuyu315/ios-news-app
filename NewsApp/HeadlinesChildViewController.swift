@@ -84,6 +84,7 @@ class HeadlinesChildViewController: UIViewController, UITableViewDataSource, UIT
     
     func fetchArticles() {
             self.articles.removeAll()
+            self.NewsTable.reloadData()
             AF.request("https://my-first-gcp-project-271002.appspot.com/\(section)").responseJSON {
                 response in switch response.result {
                 case .success(let value):
