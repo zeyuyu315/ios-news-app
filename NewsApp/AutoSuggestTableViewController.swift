@@ -31,8 +31,11 @@ class AutoSuggestTableViewController: UITableViewController, UISearchResultsUpda
         let searchText = searchController.searchBar.text!
         search = searchText
         //Do Stuff with the string
-        if search != "" {
+        if search.count > 2 {
             getData()
+        } else {
+            dataSource = []
+            self.tableView.reloadData()
         }
     }
     

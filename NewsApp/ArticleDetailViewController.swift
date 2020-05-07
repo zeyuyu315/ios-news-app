@@ -119,7 +119,10 @@ class ArticleDetailViewController: UIViewController {
                     if let attributedString = try? NSAttributedString(data: data, options: [.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil) {
                         self.detailDescription.attributedText = attributedString
                         self.detailDescription.font = UIFont.systemFont(ofSize: 17)
+                        self.detailDescription.lineBreakMode = .byTruncatingTail
                     }
+//                    let decodeString = String(htmlEncodedString: description)
+//                    self.detailDescription.text = decodeString
                     SwiftSpinner.hide()
                 }
             case .failure(let error):
@@ -140,3 +143,25 @@ class ArticleDetailViewController: UIViewController {
     */
 
 }
+
+//extension String {
+//
+//    init?(htmlEncodedString: String) {
+//
+//        guard let data = htmlEncodedString.data(using: .utf8) else {
+//            return nil
+//        }
+//
+//        let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [
+//            .documentType: NSAttributedString.DocumentType.html,
+//            .characterEncoding: String.Encoding.utf8.rawValue
+//        ]
+//
+//        guard let attributedString = try? NSAttributedString(data: data, options: options, documentAttributes: nil) else {
+//            return nil
+//        }
+//
+//        self.init(attributedString.string)
+//    }
+//
+//}
