@@ -40,6 +40,7 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITableVi
         SwiftSpinner.show("Loading Home Page..")
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let resultsController = storyboard.instantiateViewController(withIdentifier: "AutoSuggest") as! AutoSuggestTableViewController
+        resultsController.from = "home"
         let search = UISearchController(searchResultsController: resultsController )
         search.searchResultsUpdater = resultsController
         search.searchBar.placeholder = "Enter keyword.."
@@ -57,7 +58,7 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITableVi
         locationManager?.requestWhenInUseAuthorization()
         refreshControl.addTarget(self, action: #selector(didPullToRefresh), for: .valueChanged)
         NewsTable.addSubview(refreshControl)
-        NotificationCenter.default.addObserver(self, selector: #selector(getResult), name: Notification.Name("searchClicked"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(getResult), name: Notification.Name("homesearchClicked"), object: nil)
     }
     
     @objc func getResult(notification: NSNotification) {

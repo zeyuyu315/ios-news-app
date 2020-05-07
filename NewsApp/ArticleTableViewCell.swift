@@ -112,6 +112,9 @@ class ArticleTableViewCell: UITableViewCell, UIContextMenuInteractionDelegate {
                     }
                     self.defaults.set(savedArray, forKey: "savedArray")
                     self.favIcon.setImage(UIImage(systemName: "bookmark"), for: [])
+                    self.homelink?.unFavClick()
+                    self.headlinelink?.unFavClick()
+                    self.resultlink?.unFavClick()
                 }
             } else {
                 bookmark = UIAction(title: "Bookmark", image: UIImage(systemName: "bookmark")) { action in
@@ -127,6 +130,9 @@ class ArticleTableViewCell: UITableViewCell, UIContextMenuInteractionDelegate {
                     savedArray.append(self.id)
                     self.defaults.set(savedArray, forKey: "savedArray")
                     self.favIcon.setImage(UIImage(systemName: "bookmark.fill"), for: [])
+                    self.homelink?.favClick()
+                    self.headlinelink?.favClick()
+                    self.resultlink?.favClick()
                 }
             }
             return UIMenu(title: "menu", image: nil, children: [share, bookmark])

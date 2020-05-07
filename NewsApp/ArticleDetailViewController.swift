@@ -33,7 +33,7 @@ class ArticleDetailViewController: UIViewController {
                 savedArray.remove(at: index)
             }
             defaults.set(savedArray, forKey: "savedArray")
-            self.view.makeToast("Article Bookmarked. Check out the Bookmarks tab to view", duration: 3.0, position: .bottom)
+            self.view.makeToast("Article Removed from Bookmarks", duration: 3.0, position: .bottom)
         } else {
             favIcon.image = UIImage(systemName: "bookmark.fill")
             if let encoded = try? JSONEncoder().encode(article) {
@@ -46,7 +46,7 @@ class ArticleDetailViewController: UIViewController {
             var savedArray = defaults.object(forKey: "savedArray") as? [String] ?? [String]()
             savedArray.append(id)
             defaults.set(savedArray, forKey: "savedArray")
-            self.view.makeToast("Article Removed from Bookmarks", duration: 3.0, position: .bottom)
+            self.view.makeToast("Article Bookmarked. Check out the Bookmarks tab to view", duration: 3.0, position: .bottom)
         }
     }
     
@@ -111,8 +111,15 @@ class ArticleDetailViewController: UIViewController {
                     self.time.text = json["date"].string
                     self.detailTitle.text = json["title"].string
                     self.link = json["url"].string!
-                    let decodeString = String(htmlEncodedString: json["description"].string!)
-                    self.detailDescription.text = decodeString
+                    var description = json["description"].string!
+                    let regex = try! NSRegularExpression(pattern: "<iframe.*iframe>", options: NSRegularExpression.Options.caseInsensitive)
+                    let range = NSMakeRange(0, description.count)
+                    description = regex.stringByReplacingMatches(in: description, options: [], range: range, withTemplate: "")
+                    let data = Data(description.utf8)
+                    if let attributedString = try? NSAttributedString(data: data, options: [.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil) {
+                        self.detailDescription.attributedText = attributedString
+                        self.detailDescription.font = UIFont.systemFont(ofSize: 17)
+                    }
                     SwiftSpinner.hide()
                 }
             case .failure(let error):
@@ -132,26 +139,4 @@ class ArticleDetailViewController: UIViewController {
     }
     */
 
-}
-
-extension String {
-    
-    init?(htmlEncodedString: String) {
-        
-        guard let data = htmlEncodedString.data(using: .utf8) else {
-            return nil
-        }
-        
-        let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [
-            .documentType: NSAttributedString.DocumentType.html,
-            .characterEncoding: String.Encoding.utf8.rawValue
-        ]
-        
-        guard let attributedString = try? NSAttributedString(data: data, options: options, documentAttributes: nil) else {
-            return nil
-        }
-        
-        self.init(attributedString.string)
-    }
-    
 }

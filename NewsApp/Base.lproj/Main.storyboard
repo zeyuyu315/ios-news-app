@@ -117,6 +117,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
+                                            <color key="backgroundColor" systemColor="systemGray5Color" red="0.8980392157" green="0.8980392157" blue="0.91764705879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </collectionViewCellContentView>
                                         <size key="customSize" width="192" height="280"/>
                                         <connections>
@@ -197,7 +198,7 @@
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nLY-s7-UnH">
-                                            <rect key="frame" x="8" y="8" width="382" height="128"/>
+                                            <rect key="frame" x="0.0" y="8" width="398" height="128"/>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="City" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0vN-Td-iuN">
                                             <rect key="frame" x="33" y="36" width="191" height="30"/>
@@ -231,17 +232,17 @@
                                     <constraints>
                                         <constraint firstItem="UEg-6G-SXl" firstAttribute="leading" secondItem="pFf-7r-PPT" secondAttribute="trailing" constant="82" id="1Ss-Bh-nUj"/>
                                         <constraint firstAttribute="trailing" secondItem="LGe-VP-pwj" secondAttribute="trailing" constant="38" id="1js-dv-TTC"/>
-                                        <constraint firstItem="nLY-s7-UnH" firstAttribute="leading" secondItem="rUA-GM-snD" secondAttribute="leadingMargin" id="3BG-oO-T4Q"/>
                                         <constraint firstItem="pFf-7r-PPT" firstAttribute="firstBaseline" secondItem="UEg-6G-SXl" secondAttribute="firstBaseline" id="5UA-vQ-9kM"/>
                                         <constraint firstItem="LGe-VP-pwj" firstAttribute="baseline" secondItem="0vN-Td-iuN" secondAttribute="firstBaseline" id="5mQ-YG-opo"/>
+                                        <constraint firstItem="nLY-s7-UnH" firstAttribute="leading" secondItem="rUA-GM-snD" secondAttribute="leading" id="7bO-oD-IqS"/>
                                         <constraint firstItem="0vN-Td-iuN" firstAttribute="top" secondItem="rUA-GM-snD" secondAttribute="top" constant="36" id="G3A-BH-G8k"/>
                                         <constraint firstItem="LGe-VP-pwj" firstAttribute="leading" secondItem="0vN-Td-iuN" secondAttribute="trailing" constant="34" id="Lkc-CR-wCk"/>
+                                        <constraint firstAttribute="trailing" secondItem="nLY-s7-UnH" secondAttribute="trailing" id="Ogh-5E-4kW"/>
                                         <constraint firstAttribute="bottom" secondItem="nLY-s7-UnH" secondAttribute="bottom" constant="20" id="V03-wq-vRg"/>
                                         <constraint firstItem="LGe-VP-pwj" firstAttribute="trailing" secondItem="UEg-6G-SXl" secondAttribute="trailing" id="VKD-r0-PLk"/>
                                         <constraint firstItem="0vN-Td-iuN" firstAttribute="leading" secondItem="pFf-7r-PPT" secondAttribute="leading" id="aum-Fl-HO9"/>
                                         <constraint firstItem="nLY-s7-UnH" firstAttribute="top" secondItem="rUA-GM-snD" secondAttribute="topMargin" id="e6t-6q-1WD"/>
                                         <constraint firstAttribute="bottom" secondItem="UEg-6G-SXl" secondAttribute="bottom" constant="39" id="k33-lF-2wM"/>
-                                        <constraint firstItem="nLY-s7-UnH" firstAttribute="trailing" secondItem="rUA-GM-snD" secondAttribute="trailingMargin" id="lNn-cr-CnE"/>
                                         <constraint firstItem="0vN-Td-iuN" firstAttribute="leading" secondItem="rUA-GM-snD" secondAttribute="leading" constant="33" id="lWs-Ps-iAe"/>
                                         <constraint firstItem="LGe-VP-pwj" firstAttribute="leading" secondItem="UEg-6G-SXl" secondAttribute="leading" id="pGk-gZ-U83"/>
                                         <constraint firstItem="0vN-Td-iuN" firstAttribute="baseline" secondItem="LGe-VP-pwj" secondAttribute="baseline" id="qfs-oL-m5b"/>
@@ -328,7 +329,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="afS-MO-mk5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-145" y="1709"/>
+            <point key="canvasLocation" x="-146.37681159420291" y="1708.9285714285713"/>
         </scene>
         <!--Search Results-->
         <scene sceneID="2mb-rd-0sG">
@@ -800,7 +801,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="eG5-WC-qnC"/>
+        <segue reference="3cd-wn-W03"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="bookmark" catalog="system" width="112" height="128"/>

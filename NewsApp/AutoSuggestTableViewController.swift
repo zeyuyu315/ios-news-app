@@ -13,6 +13,7 @@ import SwiftSpinner
 
 class AutoSuggestTableViewController: UITableViewController, UISearchResultsUpdating{
     
+    var from = ""
     var search = ""
     var dataSource : [String] = []
     
@@ -81,7 +82,7 @@ class AutoSuggestTableViewController: UITableViewController, UISearchResultsUpda
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let searchText = dataSource[indexPath.row]
         let dic = ["search": searchText]
-        NotificationCenter.default.post(name: Notification.Name("searchClicked"), object: nil, userInfo: dic)
+        NotificationCenter.default.post(name: Notification.Name("\(from)searchClicked"), object: nil, userInfo: dic)
     }
     
     

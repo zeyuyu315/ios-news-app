@@ -39,13 +39,14 @@ class HeadlinesViewController: ButtonBarPagerTabStripViewController {
         super.viewDidLoad()
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let resultsController = storyboard.instantiateViewController(withIdentifier: "AutoSuggest") as! AutoSuggestTableViewController
+        resultsController.from = "headline"
         let search = UISearchController(searchResultsController: resultsController )
         search.searchResultsUpdater = resultsController
         search.searchBar.placeholder = "Enter keyword.."
         navigationItem.searchController = search
         navigationItem.hidesSearchBarWhenScrolling = false
         // Do any additional setup after loading the view.
-        NotificationCenter.default.addObserver(self, selector: #selector(getResult), name: Notification.Name("searchClicked"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(getResult), name: Notification.Name("headlinesearchClicked"), object: nil)
     }
     
     @objc func getResult(notification: NSNotification) {
